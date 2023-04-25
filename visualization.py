@@ -2,10 +2,10 @@ import pandas as pd
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-user_logs = pd.read_excel('Dataset/updated_user_log_format1.xlsx')
-user_profile = pd.read_excel('Dataset/user_info_format1.xlsx')
-train_df = pd.read_excel('Dataset/train_format1.xlsx')
-test_df = pd.read_excel('Dataset/test_format1.xlsx')
+user_logs = pd.read_csv('Dataset/updated_user_log_format1.csv')
+user_profile = pd.read_csv('Dataset/user_info_format1.csv')
+train_df = pd.read_csv('Dataset/train_format1.csv')
+test_df = pd.read_csv('Dataset/test_format1.csv')
 
 print(user_logs.head())
 print(user_profile.head())
