@@ -60,11 +60,13 @@ user_logs["action_type"] = user_logs["action_type"].replace(action_type_mapping)
 
 plt.figure(figsize=(10, 5))
 sns.countplot(x='action_type', data=user_logs)
-plt.title('Distribution of Action Types by count')
+plt.title('Fig.1 Distribution of Action Types by count')
 plt.xlabel('Action Type')
 plt.ylabel('Count')
 
 plt.show()
+
+"""**Fig. 1** shows that users have clicked on items over 6000 times but have only purchased, marked favorites and added to cart less than a 1000 times. Add to Cart is almost negligible because people don't want to just adding to the cart without buying."""
 
 # Merge user logs and info
 merged_data = pd.merge(user_logs, user_info, on='user_id', how='left')
@@ -76,10 +78,12 @@ action_type_percentages = 100 * action_type_counts / len(merged_data)
 
 plt.figure(figsize=(8,8))
 plt.pie(action_type_percentages, labels=action_type_percentages.index, autopct='%1.1f%%', textprops={'fontsize': 14})
-plt.title('Distribution of Action Types by percentage', fontsize=16)
+plt.title('Fig.2 Distribution of Action Types by percentage', fontsize=16)
 plt.legend(title='Action Types', loc='best', bbox_to_anchor=(1, 0.5, 0.5, 0.5))
 
 plt.show()
+
+"""**Fig. 2** shows that majority of the users only click on the items without purchasing them due to various reasons such as checking out what's available before buying or they simply don't like the item/s."""
 
 # Pivot table - to aggregate the number of actions by category and action type
 pivot_table = user_logs.pivot_table(index="cat_id", columns="action_type", values="user_id", aggfunc="count")
@@ -87,12 +91,14 @@ pivot_table = user_logs.pivot_table(index="cat_id", columns="action_type", value
 # Stacked Bar Chart - to visualize the distributions of actions across different merchants or brands
 pivot_table.plot(kind="bar", stacked=True, figsize=(14, 8))
 
-plt.title("Distribution of Actions Types by Category")
+plt.title("Fig.3 Distribution of Actions Types by Category")
 plt.xlabel("Category")
 plt.ylabel("Count of Actions")
 
 
 plt.show()
+
+"""**Fig. 3** shows that category 737 is the most popular and has the most actions among other categories. It is recommended that items in categories that have count of actions between 500 - 1000 be promoted for better sales."""
 
 # Convert time_stamp to datetime format: mmdd
 user_logs["time_stamp"] = pd.to_datetime(user_logs["time_stamp"], format="%m%d")
@@ -103,30 +109,75 @@ pivot_table = user_logs.pivot_table(index="time_stamp", columns="action_type", v
 # Line chart - to visualize the trend of user actions over time
 pivot_table.plot(kind="line", figsize=(14, 8))
 
-plt.title("Trend of User Actions over Time")
+plt.title("Fig.4 Trend of User Actions over Time")
 plt.xlabel("Time Stamp")
 plt.ylabel("Count of Actions")
 
 plt.show()
 
-"""## User Profile Data Visualization"""
+"""**Fig. 4** shows that there is an increase in user actions, especially clicks and purchases on the last week of September and during the promotional Double 11 Day.The surge in user activity indicates that it is best to optimize marketing and sales strategies during these periods. Visualizing the trend of user actions overtime helps in making data-driven decisions to improve user engagement.
+
+## User Profile Data Visualization
+*user_id*: a unique id for the shopper
+*age_range*: user's age range
+*   1 for younger than 18
+*   2 for 18-24
+*   3 for 25-29
+*   4 for 30-34
+*   5 for 35-39
+*   6 for 40-49
+*   7 and 8 for older than 50
+*   0 and Null for unknown
+
+*gender*: user's gender
+*   0 for female
+*   1 for male
+*   2 for Null or unknown
+"""
 
 # Bar - to visualize distribution of age range and gender
 plt.figure(figsize=(10, 5))
 sns.countplot(x='age_range', hue='gender', data=user_info)
-plt.title('Distribution of Age Range and Gender')
+plt.title('Fig.5 Distribution of Age Range and Gender')
 plt.xlabel('Age Range')
 plt.ylabel('Count')
+
+# Change the labels of the age ranges to their real values
+age_labels = ['Unknown', '<18', '18-24', '25-29', '30-34', '35-39', '40-49', '>50']
+plt.xticks(range(8), age_labels)
+
 plt.legend(['Female', 'Male', 'Unknown'])
 
 plt.show()
 
+"""**Fig. 5** shows the distribution of Age Range and Gender to help better understand the customer's base. Based on this chart, Female within the age range of 25-29 are the target audience. Merchants can focus on products and promotions that are more likey to appeal to female buyers."""
+
 # Violin plot - to show age range distribution by action type
 plt.figure(figsize=(10, 6))
 sns.violinplot(x='action_type', y='age_range', data=merged_data)
-plt.title("Distribution of Age Range by Action Type")
+plt.title("Fig.6 Distribution of Age Range by Action Type")
+
+# Change the labels of the age ranges to their real values
+age_labels = ['Unknown', '<18', '18-24', '25-29', '30-34', '35-39', '40-49', '>50']
+plt.yticks(range(8), age_labels)
 
 plt.show()
+
+"""**Fig. 6** shows that most activities are made by users between 25 to 29 years old. Selling items appropriate to this age range would increase the chance of converting non-repeat buyers to repeat buyers."""
+
+# Violin plot - to show gender distribution by action type
+plt.figure(figsize=(10, 6))
+sns.violinplot(x='action_type', y='gender', data=merged_data)
+plt.title("Fig.7 Distribution of Gender by Action Type")
+
+
+# Change the labels of the age ranges to their real values
+gender_labels = ['Female', 'Male', 'Null or Unknown']
+plt.yticks(range(3), gender_labels)
+
+plt.show()
+
+"""**Fig. 7** shows that most of the buyers are female. It is recommended to plan for product enhancement and promotions for female buyers and also launching new items for men to increase their interest in buying."""
 
 # Create age and gender purchase data
 age_purchase_data = merged_data[merged_data['action_type'] == 2].groupby(['age_range', 'time_stamp']).size().reset_index(name='num_purchases')
@@ -140,11 +191,18 @@ age_gender_action.fillna(0, inplace=True)
 age_gender_action = age_gender_action.div(age_gender_action.sum(axis=1), axis=0)
 
 sns.heatmap(age_gender_action, annot=True, cmap='coolwarm')
-plt.title("Frequency of Action Type by Age Range and Gender")
+plt.title("Fig.8 Frequency of Action Type by Age Range and Gender")
 
 plt.show()
 
-"""## Training Data Visualization"""
+"""**Fig. 8** shows the frequency of action type by age range and gender. This can provide insights into the shopping behavior of different age and gender groups.
+
+For example, male buyers in age between 40-49 has a higher frequency of adding items to their cart but a lower frequency of making purchases. This may indicate that these buyers are more price-sensitive than female buyers in the same age range.
+
+On the other hand, female buyers between age range 40-49 have lower frequency on adding items to cart but higher frequency on purchasing the items. This might indicate that these buyers are more impulsive buyers or have a higher disposal income than male buyers in the same age range.
+
+## Training Data Visualization
+"""
 
 # Map the number number labels to word labels
 buyer_mapping = {0: "Non-repeat Buyer", 1: "Repeat Buyer"}
@@ -155,19 +213,18 @@ train["label"] = train["label"].replace(buyer_mapping)
 # Bar - to visualize distribution of repeat and non-repeat buyers
 plt.figure(figsize=(5, 5))
 sns.countplot(x='label', data=train)
-plt.title('Distribution of Repeat and Non-repeat Buyers')
+plt.title('Fig.9 Distribution of Repeat and Non-repeat Buyers')
 plt.xlabel('Label')
 plt.ylabel('Count')
 
 plt.show()
 
-# Create a scatter plot to show the relationship between user_id and merchant_id in the training data
-sns.scatterplot(x='user_id', y='merchant_id', hue='label', data=train)
-plt.title('Relationship between User ID and Merchant ID')
-plt.xlabel('User ID')
-plt.ylabel('Merchant ID')
+"""**Fig. 9** shows the distribution of those who are making purchases versus those who are not. This provides a clear and concise representation of repeat vs. non-repeat buyers. This helps in understanding the proportion of customers repeat buyers versus non-repeat buyers.
 
-plt.show()
+This chart shows that there is an overwhelming number of Non-repeat buyers. It is recommended to focus more on improving the overall customer experience to encourage repeat purchases. 
+
+This chart provides valuable information that can be helpful for businesses to make decisions about their marketing and customer retention strategies.
+"""
 
 # Group and count the data by merchant_id and label
 merchant_counts = train.groupby(["merchant_id", "label"]).size().reset_index(name="count")
@@ -179,11 +236,13 @@ merchant_counts = repeat_buyers['merchant_id'].value_counts().head(20)
 plt.bar(range(len(merchant_counts)), merchant_counts.values)
 plt.xticks(range(len(merchant_counts)), merchant_counts.index, rotation=45)
 
-plt.title('Top 20 Merchants with the Most Repeat Buyers')
+plt.title('Fig.10 Top 20 Merchants with the Most Repeat Buyers')
 plt.xlabel('Merchant ID')
 plt.ylabel('Count of Repeat Buyers')
 
 plt.show()
+
+"""**Fig. 10** shows the behavior of customers on the platform. Merchant ID 3828 is identified as the merchant with the most repeat buyers. Identifying the top merchants with most repeat buyers should focus on providing better support and resources which could lead to increased customer satisfaction and loyalty."""
 
 # Bar chart - to show the top 20 merchants with the most non-repeat buyers
 non_repeat_buyers = train[train['label'] == "Non-repeat Buyer"]
@@ -192,11 +251,16 @@ merchant_counts = non_repeat_buyers['merchant_id'].value_counts().head(20)
 plt.bar(range(len(merchant_counts)), merchant_counts.values)
 plt.xticks(range(len(merchant_counts)), merchant_counts.index, rotation=45)
 
-plt.title('Top 20 Merchants with the Most Non-Repeat Buyers')
+plt.title('Fig.11 Top 20 Merchants with the Most Non-Repeat Buyers')
 plt.xlabel('Merchant ID')
 plt.ylabel('Count of Non-Repeat Buyers')
 
 plt.show()
+
+"""**Fig. 11** shows which merchants have the most non-repeat buyers. Merchant ID 4044 is identified as the merchant with the most non-repeat buyers. The merchants on this list should identify potential areas for improvement in customer retention strategies. This can be used for comparing a merchant's performance to its competitors in terms of customer retention. 
+
+As noticed on Fig. 10, 9 merchants (4044, 3828, 4173, 1102, 4976, 1892, 3734, 598, 361) also have the most repeat buyers. This could suggest that these merchants are popular and have a lot of customers but are struggling to keep them as there are overwhelming numbers of non-repeat buyers.
+"""
 
 # Bar chart - to show the top 20 users with the most repeat buyers
 repeat_buyers = train[train['label'] == "Repeat Buyer"]
@@ -205,11 +269,13 @@ user_counts = repeat_buyers['user_id'].value_counts().head(20)
 plt.bar(range(len(user_counts)), user_counts.values)
 plt.xticks(range(len(user_counts)), user_counts.index, rotation=45)
 
-plt.title('Top 20 Users with the Most Repeat Purchases')
+plt.title('Fig.12 Top 20 Users with the Most Repeat Purchases')
 plt.xlabel('User ID')
 plt.ylabel('Count of Repeat Purchases')
 
 plt.show()
+
+"""**Fig. 12** shows which users have the most repeat purchases. By identifying these users, businesses can analyze the behavior of these repeat purchasers and come up with a new strategy to attract new customers and improve customer retention."""
 
 # Bar chart - to show the top 20 users with the most non-repeat buyers
 repeat_buyers = train[train['label'] == "Non-repeat Buyer"]
@@ -218,17 +284,10 @@ user_counts = repeat_buyers['user_id'].value_counts().head(20)
 plt.bar(range(len(user_counts)), user_counts.values)
 plt.xticks(range(len(user_counts)), user_counts.index, rotation=45)
 
-plt.title('Top 20 Users with the Most Non-repeat Purchases')
+plt.title('Fig.13 Top 20 Users with the Most Non-repeat Purchases')
 plt.xlabel('User ID')
 plt.ylabel('Count of Non-repeat Purchases')
 
 plt.show()
 
-# Heatmap - to show the correlation matrix of the training data
-corr_matrix = train.corr()
-sns.heatmap(corr_matrix, annot=True, cmap='coolwarm')
-
-plt.title('Correlation Matrix of Training Data')
-
-plt.show()
-
+"""**Fig. 13** shows which users have the most non-repeat purchases. It is important to identify these users and analyze their behavior. Analyzing the behavior of these users can help identify potential issues with the products and services and come up with new marketing strategies to encourage repeat purchases."""
