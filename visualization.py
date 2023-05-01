@@ -66,7 +66,7 @@ plt.ylabel('Count')
 
 plt.show()
 
-"""**Fig. 1** shows that users have clicked on items over 6000 times but have only purchased, marked favorites and added to cart less than a 1000 times. Add to Cart is almost negligible because people don't want to just adding to the cart without buying."""
+"""**Fig. 1** shows that users have clicked on items over 6000 times but have only purchased, marked favorites and added to cart less than 1000 times. Add to Cart is almost negligible because people don't want to just add to the cart without buying."""
 
 # Merge user logs and info
 merged_data = pd.merge(user_logs, user_info, on='user_id', how='left')
@@ -83,7 +83,7 @@ plt.legend(title='Action Types', loc='best', bbox_to_anchor=(1, 0.5, 0.5, 0.5))
 
 plt.show()
 
-"""**Fig. 2** shows that majority of the users only click on the items without purchasing them due to various reasons such as checking out what's available before buying or they simply don't like the item/s."""
+"""**Fig. 2** shows that the majority of the users only click on the items without purchasing them due to various reasons such as checking out what's available before buying or they simply don't like the item/s."""
 
 # Pivot table - to aggregate the number of actions by category and action type
 pivot_table = user_logs.pivot_table(index="cat_id", columns="action_type", values="user_id", aggfunc="count")
@@ -150,7 +150,7 @@ plt.legend(['Female', 'Male', 'Unknown'])
 
 plt.show()
 
-"""**Fig. 5** shows the distribution of Age Range and Gender to help better understand the customer's base. Based on this chart, Female within the age range of 25-29 are the target audience. Merchants can focus on products and promotions that are more likey to appeal to female buyers."""
+"""**Fig. 5** shows the distribution of Age Range and Gender to help better understand the customer's base. Based on this chart, Female within the age range of 25-29 are the target audience. Merchants can focus on products and promotions that are more likely to appeal to female buyers."""
 
 # Violin plot - to show age range distribution by action type
 plt.figure(figsize=(10, 6))
@@ -177,7 +177,7 @@ plt.yticks(range(3), gender_labels)
 
 plt.show()
 
-"""**Fig. 7** shows that most of the buyers are female. It is recommended to plan for product enhancement and promotions for female buyers and also launching new items for men to increase their interest in buying."""
+"""**Fig. 7** shows that most of the buyers are female. It is recommended to plan for product enhancement and promotions for female buyers and launching new items for men to increase their interest in buying."""
 
 # Create age and gender purchase data
 age_purchase_data = merged_data[merged_data['action_type'] == 2].groupby(['age_range', 'time_stamp']).size().reset_index(name='num_purchases')
@@ -242,7 +242,7 @@ plt.ylabel('Count of Repeat Buyers')
 
 plt.show()
 
-"""**Fig. 10** shows the behavior of customers on the platform. Merchant ID 3828 is identified as the merchant with the most repeat buyers. Identifying the top merchants with most repeat buyers should focus on providing better support and resources which could lead to increased customer satisfaction and loyalty."""
+"""**Fig. 10** shows the behavior of customers on the platform. Merchant ID 3828 is identified as the merchant with the most repeat buyers. Identifying the top merchants with the most repeat buyers should focus on providing better support and resources, which could lead to increased customer satisfaction and loyalty."""
 
 # Bar chart - to show the top 20 merchants with the most non-repeat buyers
 non_repeat_buyers = train[train['label'] == "Non-repeat Buyer"]
