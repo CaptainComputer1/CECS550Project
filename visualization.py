@@ -48,10 +48,6 @@ user_logs.shape
 import matplotlib.pyplot as plt
 import seaborn as sns
 
-"""### User Behavior Data Visualization
-
-"""
-
 # Map the number action_type labels to word action_type labels
 action_type_mapping = {0: "Clicks", 1: "Add to Cart", 2: "Purchases", 3: "Favorites"}
 
