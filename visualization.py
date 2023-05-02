@@ -66,7 +66,7 @@ plt.ylabel('Count')
 
 plt.show()
 
-"""**Fig. 1** shows that users have clicked on items over 6000 times but have only purchased, marked favorites and added to cart less than 1000 times. Add to Cart is almost negligible because people don't want to just add to the cart without buying."""
+"""**Fig. 1** shows that users have clicked on items over 6000 times but have only purchased, marked favorites and added to cart less than 1000 times. Add to Cart is almost negligible because people don't want to just add to the cart without buying or the product is just not compelling enough."""
 
 # Merge user logs and info
 merged_data = pd.merge(user_logs, user_info, on='user_id', how='left')
@@ -83,7 +83,7 @@ plt.legend(title='Action Types', loc='best', bbox_to_anchor=(1, 0.5, 0.5, 0.5))
 
 plt.show()
 
-"""**Fig. 2** shows that the majority of the users only click on the items without purchasing them due to various reasons such as checking out what's available before buying or they simply don't like the item/s."""
+"""**Fig. 2** shows the distribution of action types by percentage. By analyzing the user actions, we can gain understanding of the conversion rate and the percentage of users who are one-time buyers vs. potential loyal customers. The high percentage of clicks and the low percentage of purchases suggests that users are browsing but not necessarily buying. The low percentage of add to cart may indicate that products are not interesting enough to add to cart."""
 
 # Pivot table - to aggregate the number of actions by category and action type
 pivot_table = user_logs.pivot_table(index="cat_id", columns="action_type", values="user_id", aggfunc="count")
@@ -98,7 +98,7 @@ plt.ylabel("Count of Actions")
 
 plt.show()
 
-"""**Fig. 3** shows that category 737 is the most popular and has the most actions among other categories. It is recommended that items in categories that have count of actions between 500 - 1000 be promoted for better sales."""
+"""**Fig. 3** shows that category 737 is the most popular and has the most actions among other categories. This could imply that category 737 is of high interest to users and may have a higher potential for sales and customer retention. It is recommended to analyze the specific products within this category that are driving the high level or user engagement."""
 
 # Convert time_stamp to datetime format: mmdd
 user_logs["time_stamp"] = pd.to_datetime(user_logs["time_stamp"], format="%m%d")
@@ -197,9 +197,9 @@ plt.show()
 
 """**Fig. 8** shows the frequency of action type by age range and gender. This can provide insights into the shopping behavior of different age and gender groups.
 
-For example, male buyers in age between 40-49 has a higher frequency of adding items to their cart but a lower frequency of making purchases. This may indicate that these buyers are more price-sensitive than female buyers in the same age range.
+For example, male buyers in the age between 40-49 have a higher frequency of adding items to their cart but a lower frequency of making purchases. This may indicate that these buyers are more price-sensitive than female buyers in the same age range.
 
-On the other hand, female buyers between age range 40-49 have lower frequency on adding items to cart but higher frequency on purchasing the items. This might indicate that these buyers are more impulsive buyers or have a higher disposal income than male buyers in the same age range.
+On the other hand, female buyers between the age range 40-49 have lower frequency on adding items to cart but higher frequency on purchasing the items. This might indicate that these buyers are more impulsive buyers or have a higher disposable income than male buyers in the same age range.
 
 ## Training Data Visualization
 """
@@ -221,7 +221,7 @@ plt.show()
 
 """**Fig. 9** shows the distribution of those who are making purchases versus those who are not. This provides a clear and concise representation of repeat vs. non-repeat buyers. This helps in understanding the proportion of customers repeat buyers versus non-repeat buyers.
 
-This chart shows that there is an overwhelming number of Non-repeat buyers. It is recommended to focus more on improving the overall customer experience to encourage repeat purchases. 
+This chart shows that there is an overwhelming number of Non-repeat buyers. This is the main problem we want to solve. It is recommended to focus more on improving the overall customer experience to encourage repeat purchases. 
 
 This chart provides valuable information that can be helpful for businesses to make decisions about their marketing and customer retention strategies.
 """
